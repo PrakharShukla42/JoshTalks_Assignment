@@ -15,6 +15,27 @@ India's e-commerce market relies heavily on localized, relatable content. Brands
 An AI lab building for India needs to move beyond superficial representation (just adding brown skin and bright colors) to structural and cultural accuracy. If a model performs well on this eval, it proves that the lab’s training data has successfully captured the long tail of Indian cultural diversity, setting it apart from generic Western models.
 
 ## 5. How the Evaluation Works
+
+### Evaluation Pipeline
+```mermaid
+graph TD
+    A[Standardized E-Commerce Prompt] -->|Generate| B(GPT Image 1)
+    A -->|Generate| C(Gemini 2.5 Flash)
+    A -->|Generate| D(Gemini 3.1 Flash)
+    B --> E{Human Evaluation UI}
+    C --> E
+    D --> E
+    E -->|Rate 1-5| F[Cultural Authenticity]
+    E -->|Rate 1-5| G[Realism / Candidness]
+    E -->|Rate 1-5| H[Prompt Adherence]
+    F --> I[Aggregated Leaderboard]
+    G --> I
+    H --> I
+    
+    style E fill:#f9f,stroke:#333,stroke-width:2px
+    style I fill:#bbf,stroke:#333,stroke-width:2px
+```
+
 We selected three foundational models:
 1. **OpenAI — GPT Image 1**
 2. **Google — Gemini 2.5 Flash Image**
@@ -24,7 +45,7 @@ We generated images using a standardized prompt focused on a specific e-commerce
 **The Prompt:** *"A realistic smartphone photo of a 25-year-old Indian man wearing a simple cotton olive green plain Kurta. He is standing casually on the balcony of a middle-class apartment in Mumbai during late evening. The lighting is natural, slightly dim, with warm yellow light coming from inside the house. No hyper-realistic studio lighting, should look like a casual candid e-commerce lifestyle shot."*
 
 **Judging Method:**
-10 human participants (aged 18+) rated the outputs blindly (without knowing which model generated which image) on three metrics (Scale of 1-5):
+10 human participants (aged 18+) rated the outputs blindly (without knowing which model generated which image) on three core metrics (Scale of 1-5):
 1. **Cultural Authenticity:** Do the clothing, architecture, and lighting look genuinely Indian?
 2. **Realism / Candidness:** Does it look like a real photograph, avoiding the "plastic AI" or overly glamorous look?
 3. **Prompt Adherence:** Did it accurately follow the specific details (olive green kurta, balcony, evening lighting)?
@@ -34,9 +55,9 @@ Participants were shown the images side-by-side on a simple web interface. They 
 
 ## 7. Results Found (Sample Run)
 *(Based on a sample run with 10 participants)*
-- **Gemini 3.1 Flash Image Preview** emerged as the winner in the "Realism / Candidness" category. Participants noted that the lighting felt authentically like a smartphone photo, and the balcony details (grills, background buildings) felt extremely accurate to an urban Indian setting.
-- **OpenAI (GPT Image 1)** scored high on "Prompt Adherence" but failed heavily on "Realism", with users describing it as "too cartoonish," "hyper-saturated," and "looking like an expensive studio ad rather than a candid shot."
-- **Gemini 2.5 Flash Image** was a solid baseline, capturing the cultural aspects well, though occasionally smoothing skin textures too much, reducing the candid feel.
+- **1st Place — Gemini 3.1 Flash Image Preview:** Emerged as the winner in the "Realism / Candidness" category. Participants noted that the lighting felt authentically like a smartphone photo, and the balcony details (grills, background buildings) felt extremely accurate to an urban Indian setting.
+- **2nd Place — Gemini 2.5 Flash Image:** A solid baseline, capturing the cultural aspects well, though occasionally smoothing skin textures too much, reducing the candid feel.
+- **3rd Place — OpenAI (GPT Image 1):** Scored high on "Prompt Adherence" but failed heavily on "Realism", with users describing it as "too cartoonish," "hyper-saturated," and "looking like an expensive studio ad rather than a candid shot."
 
 ## 8. How to Scale It Further
 To scale this evaluation:
