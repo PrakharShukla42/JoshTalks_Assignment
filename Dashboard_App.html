@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bharat-Realism Text-to-Image Eval</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- React & ReactDOM -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <!-- Babel for JSX -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <style>
+        body { background-color: #f8fafc; font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState } = React;
+
+        const App = () => {
+            const [view, setView] = useState('rate'); // 'rate' or 'leaderboard'
+            
+            // Mock Data
+            const models = [
+                { id: 'm1', name: 'Model A (OpenAI)', color: 'bg-green-100 border-green-400' },
+                { id: 'm2', name: 'Model B (Gemini 2.5)', color: 'bg-blue-100 border-blue-400' },
+                { id: 'm3', name: 'Model C (Gemini 3.1)', color: 'bg-purple-100 border-purple-400' }
+            ];
+
+            const [ratings, setRatings] = useState({
+                m1: { cultural: 0, realism: 0, adherence: 0 },
+                m2: { cultural: 0, realism: 0, adherence: 0 },
+                m3: { cultural: 0, realism: 0, adherence: 0 },
+            });
+            const [topPick, setTopPick] = useState(null);
+            const [submitted, setSubmitted] = useState(false);
+
+            const handleRate = (model, category, value) => {
+                setRatings(prev => ({
+                    ...prev,
+                    [model]: { ...prev[model], [category]: value }
+                }));
+            };
+
+            const StarRating = ({ value, onChange }) => {
+                return (
+                    <div className="flex space-x-1">
+                        {[1, 2, 3, 4, 5].map(star => (
+                            <button 
+                                key={star} 
+                                onClick={() => onChange(star)}
+                                className={`text-2xl transition-colors ${star <= value ? 'text-yellow-400' : 'text-gray-300 hover:text-yellow-200'}`}
+                            >
+                                ★
+                            </button>
+                        ))}
+                    </div>
+                );
+            };
+
+            const RatingView = () => (
+                <div className="max-w-7xl mx-auto p-6">
+                    <header className="mb-8 text-center">
+                        <h1 className="text-4xl font-bold text-gray-900 mb-4">Bharat-Realism Image Eval</h1>
+                        <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200 max-w-4xl mx-auto">
+                            <p className="text-gray-500 text-sm font-semibold uppercase tracking-wide mb-2">Eval Prompt</p>
+                            <p className="text-lg text-gray-800 italic">"A realistic smartphone photo of a 25-year-old Indian man wearing a simple cotton olive green plain Kurta. He is standing casually on the balcony of a middle-class apartment in Mumbai during late evening. The lighting is natural, slightly dim, with warm yellow light coming from inside the house."</p>
+                        </div>
+                    </header>
+
+                    {!submitted ? (
+                        <div className="space-y-8">
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                {models.map(model => (
+                                    <div key={model.id} className={`bg-white rounded-xl shadow-md overflow-hidden border-t-4 ${model.color.split(' ')[1]}`}>
+                                        <div className="h-64 bg-gray-200 flex items-center justify-center text-gray-400 flex-col">
+                                            <i data-lucide="image" className="w-12 h-12 mb-2"></i>
+                                            <span>[Generated Image Placeholder]</span>
+                                            <span className="text-sm mt-1">{model.name}</span>
+                                        </div>
+                                        
+                                        <div className="p-6 space-y-6">
+                                            <div>
+                                                <label className="block text-sm font-semibold text-gray-700 mb-1">Cultural Authenticity</label>
+                                                <p className="text-xs text-gray-500 mb-2">Are the clothes/setting authentically Indian?</p>
+                                                <StarRating value={ratings[model.id].cultural} onChange={(val) => handleRate(model.id, 'cultural', val)} />
+                                            </div>
+                                            
+                                            <div>
+                                                <label className="block text-sm font-semibold text-gray-700 mb-1">Realism / Candidness</label>
+                                                <p className="text-xs text-gray-500 mb-2">Does it look like a real photo?</p>
+                                                <StarRating value={ratings[model.id].realism} onChange={(val) => handleRate(model.id, 'realism', val)} />
+                                            </div>
+
+                                            <div>
+                                                <label className="block text-sm font-semibold text-gray-700 mb-1">Prompt Adherence</label>
+                                                <p className="text-xs text-gray-500 mb-2">Did it follow specific details?</p>
+                                                <StarRating value={ratings[model.id].adherence} onChange={(val) => handleRate(model.id, 'adherence', val)} />
+                                            </div>
+
+                                            <div className="pt-4 border-t border-gray-100">
+                                                <button 
+                                                    onClick={() => setTopPick(model.id)}
+                                                    className={`w-full py-2 px-4 rounded-md font-medium transition-colors ${topPick === model.id ? 'bg-indigo-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}
+                                                >
+                                                    {topPick === model.id ? '★ Top Pick' : 'Select as Top Pick'}
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+
+                            <div className="flex justify-center mt-10">
+                                <button 
+                                    onClick={() => setSubmitted(true)}
+                                    className="bg-green-600 hover:bg-green-700 text-white font-bold py-4 px-12 rounded-full text-lg shadow-lg transition-transform hover:scale-105"
+                                >
+                                    Submit Ratings
+                                </button>
+                            </div>
+                        </div>
+                    ) : (
+                        <div className="text-center py-20">
+                            <div className="inline-flex items-center justify-center w-24 h-24 bg-green-100 rounded-full mb-6">
+                                <svg className="w-12 h-12 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path></svg>
+                            </div>
+                            <h2 className="text-3xl font-bold text-gray-900 mb-4">Ratings Submitted!</h2>
+                            <p className="text-gray-600 mb-8">Thank you for participating in the Bharat-Realism Evaluation.</p>
+                            <button 
+                                onClick={() => setView('leaderboard')}
+                                className="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 px-8 rounded-lg shadow-md transition-colors"
+                            >
+                                View Global Leaderboard
+                            </button>
+                        </div>
+                    )}
+                </div>
+            );
+
+            const LeaderboardView = () => (
+                <div className="max-w-5xl mx-auto p-6">
+                    <div className="flex justify-between items-center mb-10">
+                        <h2 className="text-3xl font-bold text-gray-900">Live Evaluation Leaderboard</h2>
+                        <button onClick={() => { setView('rate'); setSubmitted(false); }} className="text-indigo-600 hover:text-indigo-800 font-medium font-semibold">
+                            &larr; Back to Rating
+                        </button>
+                    </div>
+
+                    <div className="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-200">
+                        <table className="min-w-full divide-y divide-gray-200">
+                            <thead className="bg-gray-50">
+                                <tr>
+                                    <th className="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Rank</th>
+                                    <th className="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Model Name</th>
+                                    <th className="px-6 py-4 text-center text-xs font-bold text-gray-500 uppercase tracking-wider">Overall Score</th>
+                                    <th className="px-6 py-4 text-center text-xs font-bold text-gray-500 uppercase tracking-wider">Authenticity</th>
+                                    <th className="px-6 py-4 text-center text-xs font-bold text-gray-500 uppercase tracking-wider">Realism</th>
+                                    <th className="px-6 py-4 text-center text-xs font-bold text-gray-500 uppercase tracking-wider">Adherence</th>
+                                    <th className="px-6 py-4 text-center text-xs font-bold text-gray-500 uppercase tracking-wider">Win Rate</th>
+                                </tr>
+                            </thead>
+                            <tbody className="bg-white divide-y divide-gray-200">
+                                {/* Hardcoded mock data from our report */}
+                                <tr className="bg-green-50">
+                                    <td className="px-6 py-6 whitespace-nowrap text-xl font-bold text-gray-900">🥇 1</td>
+                                    <td className="px-6 py-6 whitespace-nowrap text-sm font-semibold text-gray-900">Gemini 3.1 Flash</td>
+                                    <td className="px-6 py-6 whitespace-nowrap text-sm text-center font-bold text-green-600">4.46</td>
+                                    <td className="px-6 py-6 whitespace-nowrap text-sm text-center text-gray-700">4.6</td>
+                                    <td className="px-6 py-6 whitespace-nowrap text-sm text-center text-gray-700">4.5</td>
+                                    <td className="px-6 py-6 whitespace-nowrap text-sm text-center text-gray-700">4.3</td>
+                                    <td className="px-6 py-6 whitespace-nowrap text-sm text-center font-semibold text-gray-900">70%</td>
+                                </tr>
+                                <tr>
+                                    <td className="px-6 py-6 whitespace-nowrap text-xl font-bold text-gray-900">🥈 2</td>
+                                    <td className="px-6 py-6 whitespace-nowrap text-sm font-semibold text-gray-900">Gemini 2.5 Flash</td>
+                                    <td className="px-6 py-6 whitespace-nowrap text-sm text-center font-bold text-blue-600">3.83</td>
+                                    <td className="px-6 py-6 whitespace-nowrap text-sm text-center text-gray-700">4.1</td>
+                                    <td className="px-6 py-6 whitespace-nowrap text-sm text-center text-gray-700">3.4</td>
+                                    <td className="px-6 py-6 whitespace-nowrap text-sm text-center text-gray-700">4.0</td>
+                                    <td className="px-6 py-6 whitespace-nowrap text-sm text-center font-semibold text-gray-900">30%</td>
+                                </tr>
+                                <tr>
+                                    <td className="px-6 py-6 whitespace-nowrap text-xl font-bold text-gray-900">🥉 3</td>
+                                    <td className="px-6 py-6 whitespace-nowrap text-sm font-semibold text-gray-900">OpenAI DALL-E 3</td>
+                                    <td className="px-6 py-6 whitespace-nowrap text-sm text-center font-bold text-gray-600">3.36</td>
+                                    <td className="px-6 py-6 whitespace-nowrap text-sm text-center text-gray-700">3.2</td>
+                                    <td className="px-6 py-6 whitespace-nowrap text-sm text-center text-red-500">2.1</td>
+                                    <td className="px-6 py-6 whitespace-nowrap text-sm text-center text-gray-700 font-bold">4.8</td>
+                                    <td className="px-6 py-6 whitespace-nowrap text-sm text-center font-semibold text-gray-900">0%</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            );
+
+            return (
+                <div className="min-h-screen bg-gray-50">
+                    <nav className="bg-white border-b border-gray-200">
+                        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                            <div className="flex justify-between h-16">
+                                <div className="flex items-center">
+                                    <span className="text-xl font-bold text-indigo-600">Josh Talks AI</span>
+                                    <span className="ml-2 text-gray-500 text-sm">| Evaluation Platform</span>
+                                </div>
+                                <div className="flex items-center space-x-4">
+                                    <button onClick={() => setView('rate')} className={`px-3 py-2 rounded-md text-sm font-medium ${view === 'rate' ? 'bg-indigo-50 text-indigo-700' : 'text-gray-500 hover:text-gray-700'}`}>Rate Outputs</button>
+                                    <button onClick={() => setView('leaderboard')} className={`px-3 py-2 rounded-md text-sm font-medium ${view === 'leaderboard' ? 'bg-indigo-50 text-indigo-700' : 'text-gray-500 hover:text-gray-700'}`}>Leaderboard</button>
+                                </div>
+                            </div>
+                        </div>
+                    </nav>
+
+                    <main>
+                        {view === 'rate' ? <RatingView /> : <LeaderboardView />}
+                    </main>
+                </div>
+            );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+    </script>
+</body>
+</html>
