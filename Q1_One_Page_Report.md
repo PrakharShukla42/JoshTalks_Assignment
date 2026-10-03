@@ -1,4 +1,4 @@
-# 1-Page Summary: The "Bharat-Realism" Image Eval
+# 1-The "Bharat-Realism" Image Eval
 
 ## The Eval
 **Focus:** Assessing how well AI image models generate culturally authentic, relatable, and realistic lifestyle imagery for Indian e-commerce.
