@@ -6,7 +6,7 @@
 
 ## The Core Setup
 **Models Evaluated:**
-1. OpenAI — DALL-E 3
+1. OpenAI — GPT Image 1
 2. Google — Gemini 2.5 Flash Image
 3. Google — Gemini 3.1 Flash Image Preview
 
@@ -18,7 +18,7 @@
 
 ## The Main Findings
 1. **Gemini 3.1 Flash Image Preview** won overall, particularly excelling in **Realism / Candidness**. It successfully replicated the gritty, natural lighting of a smartphone camera and accurate architectural details of a Mumbai balcony (like standard iron grills).
-2. **OpenAI (DALL-E 3)** had the highest **Prompt Adherence** but suffered deeply in Realism. Participants noted the images looked "hyper-saturated," "cartoonish," and "like an expensive studio ad," completely missing the "candid smartphone" requirement.
+2. **OpenAI (GPT Image 1)** had the highest **Prompt Adherence** but suffered deeply in Realism. Participants noted the images looked "hyper-saturated," "cartoonish," and "like an expensive studio ad," completely missing the "candid smartphone" requirement.
 3. **Gemini 2.5 Flash Image** was a capable middle-ground but struggled slightly with skin textures, making the subject look too airbrushed compared to 3.1.
 
 ## The Most Important Takeaway

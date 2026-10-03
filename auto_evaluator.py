@@ -96,7 +96,7 @@ if __name__ == "__main__":
             "image_url": "https://images.unsplash.com/photo-1621592484082-2d05b1290d7a"
         },
         {
-            "model_name": "DALL-E 3",
+            "model_name": "GPT Image 1",
             "image_url": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d"
         }
     ]

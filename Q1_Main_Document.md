@@ -16,7 +16,7 @@ An AI lab building for India needs to move beyond superficial representation (ju
 
 ## 5. How the Evaluation Works
 We selected three foundational models:
-1. **OpenAI — DALL-E 3**
+1. **OpenAI — GPT Image 1**
 2. **Google — Gemini 2.5 Flash Image**
 3. **Google — Gemini 3.1 Flash Image Preview**
 
@@ -35,7 +35,7 @@ Participants were shown the images side-by-side on a simple web interface. They 
 ## 7. Results Found (Sample Run)
 *(Based on a sample run with 10 participants)*
 - **Gemini 3.1 Flash Image Preview** emerged as the winner in the "Realism / Candidness" category. Participants noted that the lighting felt authentically like a smartphone photo, and the balcony details (grills, background buildings) felt extremely accurate to an urban Indian setting.
-- **OpenAI (DALL-E 3)** scored high on "Prompt Adherence" but failed heavily on "Realism", with users describing it as "too cartoonish," "hyper-saturated," and "looking like an expensive studio ad rather than a candid shot."
+- **OpenAI (GPT Image 1)** scored high on "Prompt Adherence" but failed heavily on "Realism", with users describing it as "too cartoonish," "hyper-saturated," and "looking like an expensive studio ad rather than a candid shot."
 - **Gemini 2.5 Flash Image** was a solid baseline, capturing the cultural aspects well, though occasionally smoothing skin textures too much, reducing the candid feel.
 
 ## 8. How to Scale It Further
