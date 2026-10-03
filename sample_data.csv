@@ -1,0 +1,12 @@
+task_id,user_id,recording_url,whisper_text,user_text,is_edited,duration,time_taken_by_user,segment_character_per_second
+t1,user_1,url1,"hello world","hello world",False,10.0,12.0,0.9
+t2,user_1,url2,"good morning","good morning everyone",True,15.0,20.0,1.0
+t3,user_2,url3,"namaste","namaste",False,12.0,2.0,3.5
+t4,user_2,url4,"kaise ho","kaise ho",False,10.0,1.5,5.3
+t5,user_2,url5,"all good","all good",False,14.0,2.5,3.2
+t6,user_3,url6,"background noise","background noise very loud",True,15.0,2.0,13.0
+t7,user_3,url7,"hello","hello sir how are you",True,10.0,1.0,21.0
+t8,user_3,url8,"yes","yes I am fine",True,8.0,0.5,26.0
+t9,user_4,url9,"testing","testing one two three",True,20.0,3.0,7.0
+t10,user_4,url10,"audio check","audio check clear",True,18.0,4.0,4.2
+t11,user_4,url11,"final","final test",True,15.0,2.0,5.0
